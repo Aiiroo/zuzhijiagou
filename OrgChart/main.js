@@ -11,7 +11,7 @@ Ext.onReady(function(){
 	        Ext.create('org.view.Viewport');
 		},
 		controllers:[
-			'Org'
+			'Draw'
 		]
 	});
 })

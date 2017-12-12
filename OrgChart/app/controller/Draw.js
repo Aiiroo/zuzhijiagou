@@ -1,11 +1,11 @@
-Ext.define('org.controller.Org', {
+Ext.define('org.controller.Draw', {
 	extend : 'Ext.app.Controller',
 	init : function() {
 		this.control({
 			
 		})
 	},
-	views : ['org.view.DrawCompont'],
+	views : ['org.view.core.BaseDrawComponent'],
 	stores : [],
 	models : []
 });
