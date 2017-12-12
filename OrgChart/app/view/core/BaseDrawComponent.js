@@ -5,6 +5,8 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	maxSize: {width: 0, height: 0},
 	initComponent: function() {
 		var me = this;
+		me.nodeSize = {width: 80, height:30};
+		me.nodeGap = 30;
 		me.callParent(arguments);
 	},
 	listeners: {
@@ -20,20 +22,21 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	add: function(sprite) {
 		var me = this;
 		me.fireEvent('beforeAdd', me, sprite);
-		
-		me.setDeepValue(sprite);
+		me.setDeepValue(sprite[0]);
+		me.allWidth = sprite[0].deepX * (me.nodeSize.width + me.nodeGap); // 总宽度
+		me.setNodeLayout(sprite[0], {x: me.nodeGap, y: 50, deepX: sprite[0].deepX, deepY: sprite[0].deepY + 1, lastX: sprite[0].deepX, lastY: sprite[0].deepY+1})
 
-		// if(sprite instanceof Array && sprite.length > 0) {
-		// 	Ext.Array.each(sprite, function(s) {
-		// 		me.trueAdd(s);
-		// 	});
-		// }
+		if(sprite instanceof Array && sprite.length > 0) {
+		 	Ext.Array.each(sprite, function(s) {
+		 		me.trueAdd2(s);
+		 	});
+		}
 		
 		me.fireEvent('afterAdd', me, sprite);
 		return true;
 	},
 	/** 设置各个节点的横纵深度 **/
-	setDeepValue: function(sprite, parent) {
+	setDeepValue: function(sprite) {
 		var me = this,
 			level = sprite.level,
 			text = sprite.text,
@@ -45,7 +48,7 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		
 		if(sprite.children instanceof Array && sprite.children.length > 0) {
 			Ext.Array.each(sprite.children, function(s) {
-				me.setDeepValue(s, sprite);
+				me.setDeepValue(s);
 				sprite.sumDeepX += s.deepX;
 				sprite.sumDeepY += s.deepY;
 				sprite.maxDeepX = sprite.maxDeepX > s.deepX ? sprite.maxDeepX : s.deepX;
@@ -63,13 +66,28 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		delete sprite.maxDeepX;
 		delete sprite.sumDeepY;
 		delete sprite.maxDeepY;
-		console.log(sprite);
 	},
 	/** 设置各个节点的大小位置 **/
-	setNodeSize: function(sprite) {
+	setNodeLayout: function(sprite, parent) {
+		var me = this;
+		
+		sprite.lastX = sprite.deepX;
+		sprite.lastY = sprite.deepY;
+		
+		if(sprite.level > 3) {
+			sprite.x = parent.x + me.nodeSize.width/2 + me.nodeGap;
+			sprite.y = parent.y + me.nodeSize.height + (parent.deepY - parent.lastY) * (me.nodeGap + me.nodeSize.height) + me.nodeGap;
+			parent.lastY -= sprite.deepY;
+		}else {
+			sprite.x = parent.x + (parent.deepX - parent.lastX) * (me.nodeSize.width + me.nodeGap);
+			sprite.y = parent.y + me.nodeSize.height + me.nodeGap;
+			parent.lastX -= sprite.deepX;
+		}
+		
+		console.log(sprite);
 		if(sprite.children instanceof Array && sprite.children.length > 0) {
 			Ext.Array.each(sprite.children, function(s) {
-				me.setNodeSize(s);
+				me.setNodeLayout(s, sprite);
 			});
 		}
 	},
@@ -146,7 +164,52 @@ Ext.define('org.view.core.BaseDrawComponent', {
 			sp.show(true);
 			ss.push(sp);
 		});
+		return ss;
+	},
+	trueAdd2: function(s) {
+		var me = this;
+		var sprite = [];
+		var x = s.x,
+			y = s.y,
+			text = s.text,
+			fontSize = 14,
+			textSize = me.getTextSize(text, fontSize),
+			width = me.nodeSize.width,
+			height = me.nodeSize.height,
+			bgColor = '#bababa',
+			color = 'white',
+			textWidth = textSize.width,
+			textHeight = textSize.height
+		
+		sprite.push({
+	        type: 'rect',
+	        fill: bgColor,
+	        width: width,
+	        height: height,
+	        x: x,
+	        y: y,
+	        radius: 5
+	   	}, {
+	    	type: 'text',
+	    	text: text,
+	    	font: fontSize + 'px Arial',
+	    	fill: color,
+	    	x: x + width/2 - textWidth/2,
+	    	y: y + height/2
+	   	});
+		var ss = [];
+		Ext.Array.each(sprite, function(s) {
+			me.willBeforeAdd(s);
+			var sp = me.surface.add(s);
+			sp.show(true);
+			ss.push(sp);
+		});
 		me.didAfterAdd(me, ss);
+		if(s.children instanceof Array && s.children.length > 0) {
+		 	Ext.Array.each(s.children, function(s) {
+		 		me.trueAdd2(s);
+		 	});
+		}
 		return ss;
 	},
 	removeAll: function() {
