@@ -6,7 +6,7 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	initComponent: function() {
 		var me = this;
 		me.nodeSize = {width: 80, height:30};
-		me.nodeGap = 30;
+		me.nodeGap = 10;
 		me.callParent(arguments);
 	},
 	listeners: {
@@ -22,16 +22,10 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	add: function(sprite) {
 		var me = this;
 		me.fireEvent('beforeAdd', me, sprite);
-		me.setDeepValue(sprite[0]);
-		me.allWidth = sprite[0].deepX * (me.nodeSize.width + me.nodeGap); // 总宽度
-		me.setNodeLayout(sprite[0], {x: me.nodeGap, y: 50, deepX: sprite[0].deepX, deepY: sprite[0].deepY + 1, lastX: sprite[0].deepX, lastY: sprite[0].deepY+1})
-
-		if(sprite instanceof Array && sprite.length > 0) {
-		 	Ext.Array.each(sprite, function(s) {
-		 		me.trueAdd2(s);
-		 	});
-		}
-		
+		me.setDeepValue(sprite);
+		me.allWidth = sprite.deepX * (me.nodeSize.width + me.nodeGap); // 总宽度
+		me.setNodeLayout(sprite, {x: me.nodeGap, y: 0, deepX: sprite.deepX, deepY: sprite.deepY + 1, lastX: sprite.deepX, lastY: sprite.deepY+1})
+		me.trueAdd2(sprite);
 		me.fireEvent('afterAdd', me, sprite);
 		return true;
 	},
@@ -75,103 +69,33 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		sprite.lastY = sprite.deepY;
 		
 		if(sprite.level > 3) {
-			sprite.x = parent.x + me.nodeSize.width/2 + me.nodeGap;
+			sprite.x = parent.x + me.nodeSize.width + me.nodeGap;
 			sprite.y = parent.y + me.nodeSize.height + (parent.deepY - parent.lastY) * (me.nodeGap + me.nodeSize.height) + me.nodeGap;
 			parent.lastY -= sprite.deepY;
 		}else {
-			sprite.x = parent.x + (parent.deepX - parent.lastX) * (me.nodeSize.width + me.nodeGap);
-			sprite.y = parent.y + me.nodeSize.height + me.nodeGap;
+			sprite.x = parent.x + (parent.deepX - parent.lastX) * (me.nodeGap + me.nodeSize.width);
+			sprite.y = parent.y + me.nodeSize.height + me.nodeGap*2;
 			parent.lastX -= sprite.deepX;
 		}
 		
-		console.log(sprite);
 		if(sprite.children instanceof Array && sprite.children.length > 0) {
 			Ext.Array.each(sprite.children, function(s) {
 				me.setNodeLayout(s, sprite);
 			});
+			// 根据子节点位置调整父节点位置居中
+			if(sprite.level <= 2) {
+				sprite.x = (sprite.children[0].x + sprite.children[sprite.children.length-1].x)/2;
+			}
 		}
+		me.setNodePoint(sprite);
 	},
-	trueAdd: function(s) {
+	trueAdd2: function(sprite, parent) {
+		
 		var me = this;
-		var sprite = [];
-		if(s.type == 'node') {
-			me.setNodePoint(s);
-			var ptype = s.type,
-				items = s.items,
-				x = s.x,
-				y = s.y,
-				text = s.text,
-				fontSize = s.fontSize,
-				textSize = me.getTextSize(text, fontSize),
-				width = s.width || me.getTextSize(text, fontSize).width+10,
-				height = s.height || me.getTextSize(text, fontSize).height+10,
-				bgColor = s.bgColor,
-				color = s.color,
-				textWidth = textSize.width,
-				textHeight = textSize.height,
-				inPoint = s.inPoint,
-				outPoint = s.outPoint;
-			
-			sprite.push({
-				ptype: ptype,
-				items: items,
-		        type: 'rect',
-		        fill: bgColor,
-		        width: width,
-		        height: height,
-		        x: x,
-		        y: y,
-		        radius: 5,
-		        inPoint: inPoint,
-				outPoint: outPoint
-		   	}, {
-		   		ptype: ptype,
-		   		items: items,
-		    	type: 'text',
-		    	text: text,
-		    	font: fontSize + 'px Arial',
-		    	fill: color,
-		    	x: x + width/2 - textWidth/2,
-		    	y: y + height/2,
-		    	inPoint: inPoint,
-				outPoint: outPoint
-		   	});
-		}
-		else if(s.type == 'line') {
-			var ptype = s.type;
-				x1 = s.x,
-				y1 = s.y,
-				x2 = s.x2,
-				y2 = s.y2,
-				a1 = s.a1 || 0,
-				a2 = s.a2 || 0,
-				color = s.color;
-				
-			sprite.push({
-				ptype: ptype,
-				type: 'path',
-				path: me.getLinePath(x1,y1,x2,y2,a1,a2),
-				stroke: color || '#ababab',
-				'stroke-width': 1
-			});
-		}else {
-			sprite = s;
-		}
-		var ss = [];
-		Ext.Array.each(sprite, function(s) {
-			me.willBeforeAdd(s);
-			var sp = me.surface.add(s);
-			sp.show(true);
-			ss.push(sp);
-		});
-		return ss;
-	},
-	trueAdd2: function(s) {
-		var me = this;
-		var sprite = [];
-		var x = s.x,
-			y = s.y,
-			text = s.text,
+		var spriteEls = [];
+		var x = sprite.x,
+			y = sprite.y,
+			text = sprite.text,
 			fontSize = 14,
 			textSize = me.getTextSize(text, fontSize),
 			width = me.nodeSize.width,
@@ -181,14 +105,13 @@ Ext.define('org.view.core.BaseDrawComponent', {
 			textWidth = textSize.width,
 			textHeight = textSize.height
 		
-		sprite.push({
+		spriteEls.push({
 	        type: 'rect',
 	        fill: bgColor,
 	        width: width,
 	        height: height,
 	        x: x,
-	        y: y,
-	        radius: 5
+	        y: y
 	   	}, {
 	    	type: 'text',
 	    	text: text,
@@ -197,19 +120,29 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	    	x: x + width/2 - textWidth/2,
 	    	y: y + height/2
 	   	});
+	   	if(parent) {
+	   		spriteEls.push({
+		   		type: 'path',
+		   		path: me.getNodeLine(sprite, parent),
+		   		stroke: 'black',
+			    'stroke-width': 1
+		   	});
+	   	}
+		
+		if(sprite.children instanceof Array && sprite.children.length > 0) {
+		 	Ext.Array.each(sprite.children, function(s) {
+		 		me.trueAdd2(s, sprite);
+		 	});
+		}
+		
 		var ss = [];
-		Ext.Array.each(sprite, function(s) {
+		Ext.Array.each(spriteEls, function(s) {
 			me.willBeforeAdd(s);
 			var sp = me.surface.add(s);
 			sp.show(true);
 			ss.push(sp);
 		});
 		me.didAfterAdd(me, ss);
-		if(s.children instanceof Array && s.children.length > 0) {
-		 	Ext.Array.each(s.children, function(s) {
-		 		me.trueAdd2(s);
-		 	});
-		}
 		return ss;
 	},
 	removeAll: function() {
@@ -242,23 +175,24 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	},
 	/** 设置节点连线的起止点位置 **/
 	setNodePoint: function(node) {
+		var me = this;
 		if(node.level <= 3) { // 如果是前三级节点
 			node.inPoint = {
-				x: node.x + node.width/2,
+				x: node.x + me.nodeSize.width/2,
 				y: node.y
 			};
 			node.outPoint = {
-				x: node.x + node.width/2,
-				y: node.y + node.height
+				x: node.x + me.nodeSize.width/2,
+				y: node.y + me.nodeSize.height
 			}
 		}else {
 			node.inPoint = {
 				x: node.x,
-				y: node.y + node.height/2
+				y: node.y + me.nodeSize.height/2
 			},
 			node.outPoint = {
-				x: node.x + node.width/2,
-				y: node.y + node.height
+				x: node.x + me.nodeSize.width/2,
+				y: node.y + me.nodeSize.height
 			}
 		}
 	},
@@ -299,6 +233,24 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	    result.height = span.getBoundingClientRect().height;
 	    span.parentNode.removeChild(span);
 	    return result;
+	},
+	/** 
+	 * 根据两个节点级别设置连线
+	 **/
+	getNodeLine: function(sprite, parent) {
+		var me = this,
+			px = parent.outPoint.x,
+			py = parent.outPoint.y,
+			sx = sprite.inPoint.x,
+			sy = sprite.inPoint.y,
+			line = '';
+		
+		if(sprite.level <= 3) {
+			line += ' M'+px+','+py+' L'+px+','+(py+me.nodeGap)+' L'+sx+','+(sy-me.nodeGap)+' L'+sx+','+sy;
+		}else {
+			line += ' M'+px+','+py+' L'+px+','+sy+' L'+sx+','+sy;
+		}
+		return line;
 	},
 	getLinePath: function(x1,y1,x2,y2,arrowLeft, arrowRight) {
 		var path,
