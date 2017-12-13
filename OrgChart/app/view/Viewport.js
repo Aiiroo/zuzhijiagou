@@ -35,7 +35,7 @@ Ext.define('org.view.Viewport', {
 			{type:'node',x:30,y: 30,width:80,height:30,text:'节点1',fontSize:14,bgColor:'#cfdff6',level:2},
 			{type:'node',x: 130,y: 130,width: 80,height: 30,text:'节点2',fontSize: 14,bgColor: '#cfdff6',level:4},
 		];
-		var s1 = [{
+		var s1 = {
 			level: 1,
 			text: 'A1',
 			children: [{
@@ -92,14 +92,39 @@ Ext.define('org.view.Viewport', {
 					text: 'C5',
 					children: [{
 						level: 4,
-						text: 'D6'
+						text: 'D6',
+						children: [{
+							level: 5,
+							text: 'E3'
+						}, {
+							level: 5,
+							text: 'E4'
+						}]
 					}, {
 						level: 4,
 						text: 'D7'
 					}]
 				}]
+			}, {
+				level: 2,
+				text: 'B3'
 			}]
-		}];
-		draw.add(s1);
+		};
+		var ss = {
+			level: 1,
+			text: 'A',
+			children: [{
+				level: 2,
+				text: 'B'
+			}, {
+				level: 2,
+				text: 'C'
+			}]
+		}
+		var r = {
+			text: 'A',
+			level: 1
+		}
+		draw.add(ss);
 	}
 });

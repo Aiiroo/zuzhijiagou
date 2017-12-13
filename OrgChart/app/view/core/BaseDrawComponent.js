@@ -53,6 +53,9 @@ Ext.define('org.view.core.BaseDrawComponent', {
 			sprite.deepX = 1 + sprite.maxDeepX;
 			sprite.deepY = 1 + sprite.sumDeepY;
 		}else {
+			if(!sprite.children) {
+				sprite.maxDeepX = sprite.maxDeepY = sprite.sumDeepX = sprite.sumDeepY = 1;
+			}
 			sprite.deepX = sprite.sumDeepX;
 			sprite.deepY = 1 + sprite.maxDeepY;
 		}
@@ -87,6 +90,8 @@ Ext.define('org.view.core.BaseDrawComponent', {
 				sprite.x = (sprite.children[0].x + sprite.children[sprite.children.length-1].x)/2;
 			}
 		}
+		delete sprite.lastX;
+		delete sprite.lastY;
 		me.setNodePoint(sprite);
 	},
 	trueAdd2: function(sprite, parent) {
