@@ -24,6 +24,9 @@ Ext.define('org.view.Viewport', {
 				handler: function() {
 					var draw = Ext.getCmp('draw');
 					draw.removeAll();
+					for(var i = 1; me['deep'+i]; i++) {
+						delete me['deep'+i];
+					}
 				}
 			}]
 		}]
@@ -31,10 +34,6 @@ Ext.define('org.view.Viewport', {
 	},
 	createTextNode: function(sprite) {
 		var draw = Ext.getCmp('draw');
-		var s = [
-			{type:'node',x:30,y: 30,width:80,height:30,text:'节点1',fontSize:14,bgColor:'#cfdff6',level:2},
-			{type:'node',x: 130,y: 130,width: 80,height: 30,text:'节点2',fontSize: 14,bgColor: '#cfdff6',level:4},
-		];
 		var s1 = {
 			level: 1,
 			text: 'A1',
@@ -121,10 +120,41 @@ Ext.define('org.view.Viewport', {
 				text: 'C'
 			}]
 		}
-		var r = {
-			text: 'A',
-			level: 1
+		
+		var root = {
+			level: 1,
+			text: 'A1'
 		}
-		draw.add(s1);
+		var deep = Math.floor(Math.random()*5 + 1); // 随机深度
+		this.addRandomChildrn(root, deep);
+		draw.add(root);
+	},
+	addRandomChildrn: function(parent, deep) {
+		var count = Math.floor(Math.random()*5); // 随机子节点数量
+		if(deep <= 0) {
+			return;
+		}
+		var me = this;
+		parent.children = [];
+		me['deep'+deep] = me['deep'+deep] || 1;
+		
+		for(var i = 0; i < count; i ++) {
+			var chil = {
+				level: parent.level + 1,
+				text: me.number2Letter(parent.level + 1) + me['deep'+deep]
+			}
+			me['deep'+deep] ++;
+			me.addRandomChildrn(chil, deep-1);
+			parent.children.push(chil);
+		}
+	},
+	/**
+	 * 数字转为字母
+	 */
+	number2Letter: function(num) {
+		if(num > 26) {
+			num = num - 26;
+		}
+		return String.fromCharCode(64 + num);
 	}
 });
