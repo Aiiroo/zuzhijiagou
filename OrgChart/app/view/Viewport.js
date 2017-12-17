@@ -125,6 +125,6 @@ Ext.define('org.view.Viewport', {
 			text: 'A',
 			level: 1
 		}
-		draw.add(ss);
+		draw.add(s1);
 	}
 });
