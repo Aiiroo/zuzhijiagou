@@ -24,7 +24,7 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	add: function(sprite) {
 		var me = this;
 		me.fireEvent('beforeAdd', me, sprite);
-		me.setDeepValue(sprite);
+		me.setDeepValue(sprite, {level: 0});
 		me.allWidth = sprite.deepX * (me.nodeSize.width + me.nodeGap); // 总宽度
 		me.setNodeLayout(sprite, {x: me.nodeGap, y: 0, deepX: sprite.deepX, deepY: sprite.deepY + 1, lastX: sprite.deepX, lastY: sprite.deepY+1})
 		me.trueAdd(sprite);
@@ -32,7 +32,7 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		return true;
 	},
 	/** 设置各个节点的横纵深度 **/
-	setDeepValue: function(sprite) {
+	setDeepValue: function(sprite, parent) {
 		var me = this;me.count++;
 		
 		if(sprite.level > 3) {
@@ -43,11 +43,12 @@ Ext.define('org.view.core.BaseDrawComponent', {
 			sprite.deepY = 1;
 		}
 		
+		sprite.level = parent.level + 1;
 		sprite.maxDeepX = sprite.maxDeepY = sprite.sumDeepX = sprite.sumDeepY = 0;
 		
 		if(sprite.children instanceof Array && sprite.children.length > 0) {
 			Ext.Array.each(sprite.children, function(s) {
-				me.setDeepValue(s);
+				me.setDeepValue(s, sprite);
 				sprite.sumDeepX += s.deepX;
 				sprite.sumDeepY += s.deepY;
 				sprite.maxDeepX = sprite.maxDeepX > s.deepX ? sprite.maxDeepX : s.deepX;
