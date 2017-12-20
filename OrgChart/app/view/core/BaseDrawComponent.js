@@ -6,14 +6,18 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	count: 0,
 	initComponent: function() {
 		var me = this;
+		me.horizontalDeep = 7; // 横向展示深度
 		me.nodeSize = {width: 90, height:40}; // 节点大小
 		me.nodeGap = 10; // 节点间距
+		me.smoothValue = 3; // 连线平滑度,
+		me.nodePositon = []; // 所有节点所占的位置
 		me.callParent(arguments);
 	},
 	listeners: {
 		beforeAdd: function(draw, sprite) {
 		},
 		afterAdd: function(draw, sprite) {
+			console.log(draw.nodePositon);
 			console.log('一共添加了' + draw.count + '个节点');
 			draw.doLayout();
 		},
@@ -23,6 +27,7 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	},
 	add: function(sprite) {
 		var me = this;
+		me.count = 0;
 		me.fireEvent('beforeAdd', me, sprite);
 		me.setDeepValue(sprite, {level: 0});
 		me.allWidth = sprite.deepX * (me.nodeSize.width + me.nodeGap); // 总宽度
@@ -35,9 +40,9 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	setDeepValue: function(sprite, parent) {
 		var me = this;me.count++;
 		
-		if(sprite.level > 3) {
-			sprite.deeX = 0.5; // 从第四级开始每个节点deepX只占0.5
-			sprite.deeY = 1;
+		if(sprite.level > me.horizontalDeep) {
+			sprite.deepX = 0.5;
+			sprite.deepY = 1;
 		}else {
 			sprite.deepX = 1;
 			sprite.deepY = 1;
@@ -55,29 +60,28 @@ Ext.define('org.view.core.BaseDrawComponent', {
 				sprite.maxDeepY = sprite.maxDeepY > s.deepY ? sprite.maxDeepY : s.deepY;
 			});
 		}
-		if(sprite.level > 3) {
+		if(sprite.level > me.horizontalDeep) {
 			sprite.deepX = 0.5 + sprite.maxDeepX;
 			sprite.deepY = 1 + sprite.sumDeepY;
-		}else if(sprite.level == 2) {
-			if(!sprite.children) {
+		}else {
+			if(!sprite.children || sprite.children.length == 0) {
 				sprite.deepX = 1;
+				sprite.deepY = 1;
 			}else {
-				sprite.deepX = sprite.sumDeepX;
+				if(sprite.level < me.horizontalDeep) {
+					sprite.deepX = sprite.sumDeepX;
+					sprite.deepY = 1 + sprite.maxDeepY;
+				}else {
+					sprite.deepX = 1 + sprite.maxDeepX;
+					sprite.deepY = 1 + sprite.sumDeepY;
+				}
 			}
-			sprite.deepY = 1 + sprite.maxDeepY;
-		}else if(sprite.level == 3) {
-			sprite.deepX = 1 + sprite.maxDeepX;
-			sprite.deepY = 1 + sprite.sumDeepY;
-		}else if(sprite.level == 1) {
-			sprite.deepX = sprite.sumDeepX;
-			sprite.deepY = 1 + sprite.sumDeepY;
 		}
 		
 		delete sprite.sumDeepX;
 		delete sprite.maxDeepX;
 		delete sprite.sumDeepY;
 		delete sprite.maxDeepY;
-		console.log(sprite);
 	},
 	/** 设置各个节点的大小位置 **/
 	setNodeLayout: function(sprite, parent) {
@@ -86,8 +90,8 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		sprite.lastX = sprite.deepX;
 		sprite.lastY = sprite.deepY;
 		
-		if(sprite.level > 3) {
-			sprite.x = parent.x + me.nodeSize.width*0.5 + me.nodeGap; // 向左缩进0.25
+		if(sprite.level > me.horizontalDeep) {
+			sprite.x = parent.x + me.nodeSize.width*0.5 + me.nodeGap;
 			sprite.y = parent.y + me.nodeSize.height + (parent.deepY - parent.lastY) * (me.nodeGap + me.nodeSize.height) + me.nodeGap;
 			parent.lastY -= sprite.deepY;
 		}else {
@@ -101,12 +105,13 @@ Ext.define('org.view.core.BaseDrawComponent', {
 				me.setNodeLayout(s, sprite);
 			});
 			// 根据子节点位置调整父节点位置居中
-			if(sprite.level <= 2) {
+			if(sprite.level < me.horizontalDeep) {
 				sprite.x = (sprite.children[0].x + sprite.children[sprite.children.length-1].x)/2;
 			}
 		}
 		delete sprite.lastX;
 		delete sprite.lastY;
+		me.nodePositon.push({x: sprite.x, y: sprite.y});
 		me.setNodePoint(sprite);
 	},
 	trueAdd: function(sprite, parent) {
@@ -115,16 +120,16 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		var spriteEls = [];
 		var x = sprite.x,
 			y = sprite.y,
-			text = sprite.text || '',
-			fontSize = 14,
+			text = me.wrapText(sprite.text) || '',
+			fontSize = (text.indexOf('\n') != -1 ? 12 : 14),
 			textSize = me.getTextSize(text, fontSize),
 			width = me.nodeSize.width,
 			height = me.nodeSize.height,
-			bgColor = sprite.bgColor || '#bababa',
+			bgColor = sprite.bgColor || '#00b7c3',
 			color = sprite.color || 'white',
 			textWidth = textSize.width,
 			textHeight = textSize.height
-		
+			
 		spriteEls.push({
 	        type: 'rect',
 	        fill: bgColor,
@@ -139,15 +144,15 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	    	font: fontSize + 'px Arial',
 	    	fill: color,
 	    	x: x + width/2,
-	    	y: y + height/2,
+	    	y: y + height/2 - (text.indexOf('\n') != -1 ? 8 : 0),
 	    	'text-anchor': 'middle'
 	   	});
 	   	if(parent) {
 	   		spriteEls.push({
 		   		type: 'path',
 		   		path: me.getNodeLine(sprite, parent),
-		   		stroke: 'black',
-			    'stroke-width': 1
+		   		stroke: '#00b9a1',
+			    'stroke-width': 2
 		   	});
 	   	}
 		
@@ -205,7 +210,7 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	/** 设置节点连线的起止点位置 **/
 	setNodePoint: function(node) {
 		var me = this;
-		if(node.level <= 3) { // 如果是前三级节点
+		if(node.level <= me.horizontalDeep) {
 			node.inPoint = {
 				x: node.x + me.nodeSize.width/2,
 				y: node.y
@@ -244,6 +249,20 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		});
 		return menu;
 	},
+	/**
+	 * 为文字添加换行符(只支持换一行)
+	 */
+	wrapText: function(text) {
+		var w = text.replace(/\s/g,'') || '';
+		if(w.length > 5) {
+			if(w.length > 10) {
+				w = w.substring(0,5) + '\n' + w.substring(5,9) + '...'; 
+			}else {
+				w = w.substring(0,5) + '\n' + w.substring(5)
+			}
+		}
+		return w;
+	},
 	getTextSize: function(text, fontSize) {
 		var me = this;
 		var span = document.createElement("pre");
@@ -274,7 +293,7 @@ Ext.define('org.view.core.BaseDrawComponent', {
 			sy = sprite.inPoint.y,
 			line = '';
 		
-		if(sprite.level <= 3) {
+		if(sprite.level <= me.horizontalDeep) {
 			line += ' M'+px+','+py+' L'+px+','+(py+me.nodeGap)+' L'+sx+','+(sy-me.nodeGap)+' L'+sx+','+sy;
 		}else {
 			line += ' M'+px+','+py+' L'+px+','+sy+' L'+sx+','+sy;
