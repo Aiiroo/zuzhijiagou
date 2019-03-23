@@ -5,10 +5,10 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	count: 0,
 	initComponent: function() {
 		var me = this;
-		me.horizontalDeep = 7; // 横向展示深度
+		me.horizontalDeep = 3; // 横向展示深度
 		me.nodeSize = {width: 90, height:40}; // 节点大小
 		me.nodeGap = 10; // 节点间距
-		me.smoothValue = 3; // 连线平滑度,
+		// me.smoothValue = 3; // 连线平滑度,
 		me.nodePositon = []; // 所有节点所占的位置
 		me.contentSize = {width: 0, height: 0};
 		me.callParent(arguments);
@@ -31,6 +31,17 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		me.setDeepValue(node, 0, {level: 0, posX: 1, posY: 0});
 		me.allWidth = node.deepX * (me.nodeSize.width + me.nodeGap); // 总宽度
 		me.setNodeLayout(node, {x: me.nodeGap, y: 0, deepX: node.deepX, deepY: node.deepY + 1, lastX: node.deepX, lastY: node.deepY+1})
+		// me.compressTree(node);
+//		me.nodeMoveLeft(node.children[0].children[0].children[0].children[3].children[0]);
+//		me.nodeMoveLeft(node.children[0].children[0].children[0].children[3].children[0]);
+//		me.nodeMoveLeft(node.children[0].children[0].children[0].children[3].children[0]);
+//		
+//		me.nodeMoveLeft(node.children[0].children[0].children[0].children[3].children[0].children[1].children[0]);
+//		me.nodeMoveLeft(node.children[0].children[0].children[0].children[3].children[0].children[1].children[1]);
+//		me.nodeMoveLeft(node.children[0].children[0].children[0].children[3].children[0].children[1].children[2]);
+		
+//		me.nodeMoveLeft(node.children[0].children[0].children[0].children[3].children[0].children[2]);
+		
 		me.trueAdd(node);
 		me.fireEvent('afterAdd', me, node);
 		return true;
@@ -82,6 +93,109 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		delete node.sumDeepY;
 		delete node.maxDeepY;
 	},
+	/**
+	 * 压缩树结构
+	 */
+	compressTree: function(node) {
+		var me = this;
+		
+		// 如果该节点可以左移
+		while(me.nodeMoveLeftTest(node)) {
+			me.nodeMoveLeft(node);
+		}
+		// 直到该节点不能左移
+		if(node.children instanceof Array && node.children.length > 0) {
+			node.children.map(function(s) {
+				me.compressTree(s);
+			});
+		}
+	},
+	/**
+	 * 节点左移观察
+	 */
+	nodeMoveLeftTest: function(node) {
+		var me = this,
+			nx = node.x,
+			ny = node.y,
+			tx = nx - (me.nodeSize.width + me.nodeGap); // 左移一个单位后的x坐标
+		node.movable = true; // 是否可移动
+		if(node.level > me.horizontalDeep) {
+			return false;
+		}
+		if(me.checkPositonAvailable({x: tx, y: ny}) ) {
+			if(node.children instanceof Array && node.children.length > 0) {
+				var watchArr = node.children.map(function(s) {
+					return me.nodeMoveLeftTest(s);
+				});
+				if(watchArr.indexOf(false) != -1) { // 只要有一个不能移动的就放弃本次移动
+					node.movable = false;
+				}
+			}
+			return node.movable;
+		}else {
+			return false;
+		}
+	},
+	/**
+	 * 判断位置是否空闲
+	 */
+	checkPositonAvailable: function(pos) {
+		var me = this, available = true;
+		
+		if(pos.x < 0) {
+			return false;
+		}
+		me.nodePositon.map(function(p) {
+			if(p.x == pos.x && p.y == pos.y) {
+				available = false;
+			}
+		});
+		return available;
+	},
+	/**
+	 * 节点左移
+	 */
+	nodeMoveLeft: function(node) {
+		var me = this
+			nx = node.x,
+			ny = node.y,
+			tx = nx - me.nodeSize.width - me.nodeGap;
+		
+		me.nodePositon.map(function(p, i) {
+			if(p.x == nx && p.y == ny) {
+				me.nodePositon.splice(i, 1);
+			}
+		});
+		node.x = tx;
+		me.setNodePoint(node);
+		me.nodePositon.push({x: tx, y: ny});
+		if(node.children instanceof Array && node.children.length > 0) {
+			node.children.map(function(s) {
+				me.nodeMoveLeft(s);
+			});
+		}
+	},
+	/**
+	 * 父节点居中
+	 */
+	centerParent: function(node) {
+		var me = this;
+		
+		if(node.level >= me.horizontalDeep) {
+			return;
+		}
+		
+		if(node.children instanceof Array && node.children.length > 0) {
+			Ext.Array.each(node.children, function(s, i) {
+				me.centerParent(s);
+			});
+			node.x = (node.children[0].x + node.children[node.children.length-1].x)/2;
+			me.setNodePoint(node);
+		}else {
+			return;
+		}
+		
+	},
 	/** 设置各个节点的大小位置 **/
 	setNodeLayout: function(node, parent) {
 		var me = this;
@@ -114,7 +228,6 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		me.setNodePoint(node);
 	},
 	trueAdd: function(node, parent) {
-		
 		var me = this;
 		var nodeEls = [];
 		var x = node.x,
@@ -174,8 +287,13 @@ Ext.define('org.view.core.BaseDrawComponent', {
 	removeAll: function() {
 		var me = this;
 		var sf = me.surface;
+		//重置滚动条位置
+		me.el.dom.scrollTop = 0;
+		me.el.dom.scrollLeft = 0;
 		sf.removeAll();
+		me.contentSize = {width: 0, height: 0};
 		me.nodePositon = [];
+		me.doLayout();
 	},
 	willBeforeAdd: function(node) {
 		var me = this;
@@ -202,8 +320,8 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		Ext.Array.each(node, function(s) {
 			var layout = s.el.dom.getBoundingClientRect();
 			me.contentSize = {
-				width: me.contentSize.width > (layout.x + layout.width) ? me.contentSize.width : (layout.x + layout.width),
-				height: me.contentSize.height > (layout.y + layout.height) ? me.contentSize.height : (layout.y + layout.height)
+				width: me.contentSize.width > (layout.left + layout.width) ? me.contentSize.width : (layout.left + layout.width),
+				height: me.contentSize.height > (layout.top + layout.height) ? me.contentSize.height : (layout.top + layout.height)
 			}
 		});
 	},
@@ -311,11 +429,15 @@ Ext.define('org.view.core.BaseDrawComponent', {
 		
 		if(draw.contentSize.width > width) {
 			draw.el.dom.style.overflowX = 'scroll';
-			svgEl.style.width = draw.contentSize.width+10 + 'px';
+		}else {
+			draw.el.dom.style.overflowX = 'hidden';
 		}
 		if(draw.contentSize.height > height) {
 			draw.el.dom.style.overflowY = 'scroll';
-			svgEl.style.height = draw.contentSize.height+10 + 'px';
+		}else {
+			draw.el.dom.style.overflowY = 'hidden';
 		}
+		svgEl.style.width = draw.contentSize.width+10 + 'px';
+		svgEl.style.height = draw.contentSize.height+10 + 'px';
 	}
 });

@@ -1,648 +1,108 @@
 var orgData = {
-	"text": "优软科技",
-    "children": [
-        {
-            "id": 15035,
-            "text": "股东会",
-            "parentId": 0,
-            "url": "",
-            "qtitle": "",
-            "leaf": false,
-            "allowDrag": false,
-            "qtip": "",
-            "cls": "",
-            "iconCls": "",
-            "children": [
-                {
-                    "id": 14340,
-                    "text": "董事会",
-                    "parentId": 15035,
-                    "url": "",
-                    "qtitle": "",
-                    "leaf": false,
-                    "allowDrag": false,
-                    "qtip": "",
-                    "cls": "",
-                    "iconCls": "",
-                    "children": [
-                        {
-                            "id": 14341,
-                            "text": "总裁办",
-                            "parentId": 14340,
-                            "url": "",
-                            "qtitle": "",
-                            "leaf": false,
-                            "allowDrag": false,
-                            "qtip": "",
-                            "cls": "",
-                            "iconCls": "",
-                            "children": [
-                                {
-                                    "id": 14375,
-                                    "text": "人资行政中心",
-                                    "parentId": 14341,
-                                    "url": "",
-                                    "qtitle": "",
-                                    "leaf": false,
-                                    "allowDrag": true,
-                                    "qtip": "",
-                                    "cls": "",
-                                    "iconCls": "",
-                                    "children": [],
-                                    "using": false,
-                                    "checked": false
-                                },
-                                {
-                                    "id": 16732,
-                                    "text": "财务中心",
-                                    "parentId": 14341,
-                                    "url": "",
-                                    "qtitle": "",
-                                    "leaf": false,
-                                    "allowDrag": true,
-                                    "qtip": "",
-                                    "cls": "",
-                                    "iconCls": "",
-                                    "children": [],
-                                    "using": false,
-                                    "checked": false
-                                },
-                                {
-                                    "id": 16733,
-                                    "text": "风控中心",
-                                    "parentId": 14341,
-                                    "url": "",
-                                    "qtitle": "",
-                                    "leaf": false,
-                                    "allowDrag": true,
-                                    "qtip": "",
-                                    "cls": "",
-                                    "iconCls": "",
-                                    "children": [],
-                                    "using": false,
-                                    "checked": false
-                                },
-                                {
-                                    "id": 17411,
-                                    "text": "优软董事会",
-                                    "parentId": 14341,
-                                    "url": "",
-                                    "qtitle": "",
-                                    "leaf": false,
-                                    "allowDrag": false,
-                                    "qtip": "",
-                                    "cls": "",
-                                    "iconCls": "",
-                                    "children": [
-                                        {
-                                            "id": 17412,
-                                            "text": "优软总经办",
-                                            "parentId": 17411,
-                                            "url": "",
-                                            "qtitle": "",
-                                            "leaf": false,
-                                            "allowDrag": false,
-                                            "qtip": "",
-                                            "cls": "",
-                                            "iconCls": "",
-                                            "children": [
-                                                {
-                                                    "id": 16206,
-                                                    "text": "优软商城",
-                                                    "parentId": 17412,
-                                                    "url": "",
-                                                    "qtitle": "",
-                                                    "leaf": false,
-                                                    "allowDrag": true,
-                                                    "qtip": "",
-                                                    "cls": "",
-                                                    "iconCls": "",
-                                                    "children": [],
-                                                    "using": false,
-                                                    "checked": false
-                                                },
-                                                {
-                                                    "id": 17413,
-                                                    "text": "优软运营中心",
-                                                    "parentId": 17412,
-                                                    "url": "",
-                                                    "qtitle": "",
-                                                    "leaf": false,
-                                                    "allowDrag": false,
-                                                    "qtip": "",
-                                                    "cls": "",
-                                                    "iconCls": "",
-                                                    "children": [
-                                                        {
-                                                            "id": 17414,
-                                                            "text": "优软销售部",
-                                                            "parentId": 17413,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": true,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [],
-                                                            "using": false,
-                                                            "checked": false
-                                                        },
-                                                        {
-                                                            "id": 17415,
-                                                            "text": "优软实施部",
-                                                            "parentId": 17413,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": true,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [],
-                                                            "using": false,
-                                                            "checked": false
-                                                        },
-                                                        {
-                                                            "id": 17416,
-                                                            "text": "优软售后服务部",
-                                                            "parentId": 17413,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": true,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [],
-                                                            "using": false,
-                                                            "checked": false
-                                                        }
-                                                    ],
-                                                    "using": false,
-                                                    "checked": false
-                                                },
-                                                {
-                                                    "id": 17417,
-                                                    "text": "优软市场中心",
-                                                    "parentId": 17412,
-                                                    "url": "",
-                                                    "qtitle": "",
-                                                    "leaf": false,
-                                                    "allowDrag": false,
-                                                    "qtip": "",
-                                                    "cls": "",
-                                                    "iconCls": "",
-                                                    "children": [
-                                                        {
-                                                            "id": 16186,
-                                                            "text": "优软市场中心",
-                                                            "parentId": 17417,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": true,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [],
-                                                            "using": false,
-                                                            "checked": false
-                                                        },
-                                                        {
-                                                            "id": 17418,
-                                                            "text": "优软市场策划部",
-                                                            "parentId": 17417,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": true,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [],
-                                                            "using": false,
-                                                            "checked": false
-                                                        },
-                                                        {
-                                                            "id": 17419,
-                                                            "text": "优软标准化测试部",
-                                                            "parentId": 17417,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": false,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [
-                                                                {
-                                                                    "id": 17420,
-                                                                    "text": "优软标准化测试部",
-                                                                    "parentId": 17419,
-                                                                    "url": "",
-                                                                    "qtitle": "",
-                                                                    "leaf": false,
-                                                                    "allowDrag": true,
-                                                                    "qtip": "",
-                                                                    "cls": "",
-                                                                    "iconCls": "",
-                                                                    "children": [],
-                                                                    "using": false,
-                                                                    "checked": false
-                                                                },
-                                                                {
-                                                                    "id": 17422,
-                                                                    "text": "优软标准化测试部",
-                                                                    "parentId": 17419,
-                                                                    "url": "",
-                                                                    "qtitle": "",
-                                                                    "leaf": false,
-                                                                    "allowDrag": true,
-                                                                    "qtip": "",
-                                                                    "cls": "",
-                                                                    "iconCls": "",
-                                                                    "children": [],
-                                                                    "using": false,
-                                                                    "checked": false
-                                                                }
-                                                            ],
-                                                            "using": false,
-                                                            "checked": false
-                                                        },
-                                                        {
-                                                            "id": 17423,
-                                                            "text": "优软产品规划部",
-                                                            "parentId": 17417,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": true,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [],
-                                                            "using": false,
-                                                            "checked": false
-                                                        }
-                                                    ],
-                                                    "using": false,
-                                                    "checked": false
-                                                },
-                                                {
-                                                    "id": 17424,
-                                                    "text": "优软研发中心",
-                                                    "parentId": 17412,
-                                                    "url": "",
-                                                    "qtitle": "",
-                                                    "leaf": false,
-                                                    "allowDrag": false,
-                                                    "qtip": "",
-                                                    "cls": "",
-                                                    "iconCls": "",
-                                                    "children": [
-                                                        {
-                                                            "id": 17425,
-                                                            "text": "优软技术研发部",
-                                                            "parentId": 17424,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": true,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [],
-                                                            "using": false,
-                                                            "checked": false
-                                                        },
-                                                        {
-                                                            "id": 17426,
-                                                            "text": "优软UAS系统部",
-                                                            "parentId": 17424,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": false,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [
-                                                                {
-                                                                    "id": 16266,
-                                                                    "text": "优软UAS系统部",
-                                                                    "parentId": 17426,
-                                                                    "url": "",
-                                                                    "qtitle": "",
-                                                                    "leaf": false,
-                                                                    "allowDrag": true,
-                                                                    "qtip": "",
-                                                                    "cls": "",
-                                                                    "iconCls": "",
-                                                                    "children": [],
-                                                                    "using": false,
-                                                                    "checked": false
-                                                                },
-                                                                {
-                                                                    "id": 16267,
-                                                                    "text": "优软UAS系统部",
-                                                                    "parentId": 17426,
-                                                                    "url": "",
-                                                                    "qtitle": "",
-                                                                    "leaf": false,
-                                                                    "allowDrag": true,
-                                                                    "qtip": "",
-                                                                    "cls": "",
-                                                                    "iconCls": "",
-                                                                    "children": [],
-                                                                    "using": false,
-                                                                    "checked": false
-                                                                },
-                                                                {
-                                                                    "id": 16268,
-                                                                    "text": "优软UAS系统部",
-                                                                    "parentId": 17426,
-                                                                    "url": "",
-                                                                    "qtitle": "",
-                                                                    "leaf": false,
-                                                                    "allowDrag": true,
-                                                                    "qtip": "",
-                                                                    "cls": "",
-                                                                    "iconCls": "",
-                                                                    "children": [],
-                                                                    "using": false,
-                                                                    "checked": false
-                                                                },
-                                                                {
-                                                                    "id": 16269,
-                                                                    "text": "优软UAS系统部",
-                                                                    "parentId": 17426,
-                                                                    "url": "",
-                                                                    "qtitle": "",
-                                                                    "leaf": false,
-                                                                    "allowDrag": true,
-                                                                    "qtip": "",
-                                                                    "cls": "",
-                                                                    "iconCls": "",
-                                                                    "children": [],
-                                                                    "using": false,
-                                                                    "checked": false
-                                                                },
-                                                                {
-                                                                    "id": 16270,
-                                                                    "text": "优软UAS系统部",
-                                                                    "parentId": 17426,
-                                                                    "url": "",
-                                                                    "qtitle": "",
-                                                                    "leaf": false,
-                                                                    "allowDrag": true,
-                                                                    "qtip": "",
-                                                                    "cls": "",
-                                                                    "iconCls": "",
-                                                                    "children": [],
-                                                                    "using": false,
-                                                                    "checked": false
-                                                                }
-                                                            ],
-                                                            "using": false,
-                                                            "checked": false
-                                                        },
-                                                        {
-                                                            "id": 17427,
-                                                            "text": "优软移动终端部",
-                                                            "parentId": 17424,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": true,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [],
-                                                            "using": false,
-                                                            "checked": false
-                                                        },
-                                                        {
-                                                            "id": 17429,
-                                                            "text": "优软产品研发部",
-                                                            "parentId": 17424,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": true,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [],
-                                                            "using": false,
-                                                            "checked": false
-                                                        }
-                                                    ],
-                                                    "using": false,
-                                                    "checked": false
-                                                },
-                                                {
-                                                    "id": 17990,
-                                                    "text": "市场渠道部",
-                                                    "parentId": 17412,
-                                                    "url": "",
-                                                    "qtitle": "",
-                                                    "leaf": false,
-                                                    "allowDrag": true,
-                                                    "qtip": "",
-                                                    "cls": "",
-                                                    "iconCls": "",
-                                                    "children": [],
-                                                    "using": false,
-                                                    "checked": false
-                                                },
-                                                {
-                                                    "id": 18010,
-                                                    "text": "优软云中心",
-                                                    "parentId": 17412,
-                                                    "url": "",
-                                                    "qtitle": "",
-                                                    "leaf": false,
-                                                    "allowDrag": false,
-                                                    "qtip": "",
-                                                    "cls": "",
-                                                    "iconCls": "",
-                                                    "children": [
-                                                        {
-                                                            "id": 17428,
-                                                            "text": "优软B2B平台部",
-                                                            "parentId": 18010,
-                                                            "url": "",
-                                                            "qtitle": "",
-                                                            "leaf": false,
-                                                            "allowDrag": false,
-                                                            "qtip": "",
-                                                            "cls": "",
-                                                            "iconCls": "",
-                                                            "children": [
-                                                                {
-                                                                    "id": 16226,
-                                                                    "text": "优软B2B平台部",
-                                                                    "parentId": 17428,
-                                                                    "url": "",
-                                                                    "qtitle": "",
-                                                                    "leaf": false,
-                                                                    "allowDrag": true,
-                                                                    "qtip": "",
-                                                                    "cls": "",
-                                                                    "iconCls": "",
-                                                                    "children": [],
-                                                                    "using": false,
-                                                                    "checked": false
-                                                                }
-                                                            ],
-                                                            "using": false,
-                                                            "checked": false
-                                                        }
-                                                    ],
-                                                    "using": false,
-                                                    "checked": false
-                                                }
-                                            ],
-                                            "using": false,
-                                            "checked": false
-                                        }
-                                    ],
-                                    "using": false,
-                                    "checked": false
-                                }
-                            ],
-                            "using": false,
-                            "checked": false
-                        },
-                        {
-                            "id": 16725,
-                            "text": "战略委员会",
-                            "parentId": 14340,
-                            "url": "",
-                            "qtitle": "",
-                            "leaf": false,
-                            "allowDrag": true,
-                            "qtip": "",
-                            "cls": "",
-                            "iconCls": "",
-                            "children": [],
-                            "using": false,
-                            "checked": false
-                        },
-                        {
-                            "id": 16726,
-                            "text": "薪酬与考核委员会",
-                            "parentId": 14340,
-                            "url": "",
-                            "qtitle": "",
-                            "leaf": false,
-                            "allowDrag": true,
-                            "qtip": "",
-                            "cls": "",
-                            "iconCls": "",
-                            "children": [],
-                            "using": false,
-                            "checked": false
-                        },
-                        {
-                            "id": 16727,
-                            "text": "提名委员会",
-                            "parentId": 14340,
-                            "url": "",
-                            "qtitle": "",
-                            "leaf": false,
-                            "allowDrag": true,
-                            "qtip": "",
-                            "cls": "",
-                            "iconCls": "",
-                            "children": [],
-                            "using": false,
-                            "checked": false
-                        },
-                        {
-                            "id": 16728,
-                            "text": "审计委员会",
-                            "parentId": 14340,
-                            "url": "",
-                            "qtitle": "",
-                            "leaf": false,
-                            "allowDrag": false,
-                            "qtip": "",
-                            "cls": "",
-                            "iconCls": "",
-                            "children": [
-                                {
-                                    "id": 16729,
-                                    "text": "内审监察部",
-                                    "parentId": 16728,
-                                    "url": "",
-                                    "qtitle": "",
-                                    "leaf": false,
-                                    "allowDrag": true,
-                                    "qtip": "",
-                                    "cls": "",
-                                    "iconCls": "",
-                                    "children": [],
-                                    "using": false,
-                                    "checked": false
-                                }
-                            ],
-                            "using": false,
-                            "checked": false
-                        },
-                        {
-                            "id": 16736,
-                            "text": "投资部",
-                            "parentId": 14340,
-                            "url": "",
-                            "qtitle": "",
-                            "leaf": false,
-                            "allowDrag": true,
-                            "qtip": "",
-                            "cls": "",
-                            "iconCls": "",
-                            "children": [],
-                            "using": false,
-                            "checked": false
-                        },
-                        {
-                            "id": 16737,
-                            "text": "董秘办",
-                            "parentId": 14340,
-                            "url": "",
-                            "qtitle": "",
-                            "leaf": false,
-                            "allowDrag": true,
-                            "qtip": "",
-                            "cls": "",
-                            "iconCls": "",
-                            "children": [],
-                            "using": false,
-                            "checked": false
-                        }
-                    ],
-                    "using": false,
-                    "checked": false
-                },
-                {
-                    "id": 14552,
-                    "text": "监事会",
-                    "parentId": 15035,
-                    "url": "",
-                    "qtitle": "",
-                    "leaf": false,
-                    "allowDrag": true,
-                    "qtip": "",
-                    "cls": "",
-                    "iconCls": "",
-                    "children": [],
-                    "using": false,
-                    "checked": false
-                }
-            ],
-            "using": false,
-            "checked": false
-        }
-    ]
-}
+	"text": "组织架构",
+	"children": [{
+		"text": "股东会",
+		"children": [{
+			"text": "董事会",
+			"children": [{
+				"text": "总裁办",
+				"children": [{
+					"text": "人资行政中心"
+				}, {
+					"text": "财务中心"
+				}, {
+					"text": "风控中心"
+				}, {
+					"text": "达达董事会",
+					"children": [{
+						"text": "达达总经办",
+						"children": [{
+							"text": "达达商城"
+						}, {
+							"text": "达达运营中心",
+							"children": [{
+								"text": "达达销售部"
+							}, {
+								"text": "达达实施部"
+							}, {
+								"text": "达达售后服务部"
+							}]
+						}, {
+							"text": "达达市场中心",
+							"children": [{
+								"text": "达达市场中心"
+							}, {
+								"text": "达达市场策划部"
+							}, {
+								"text": "达达标准化测试部",
+								"children": [{
+										"text": "达达标准化测试部"
+									},
+									{
+										"text": "达达标准化测试部"
+									}
+								]
+							}, {
+								"text": "达达产品规划部"
+							}]
+						}, {
+							"text": "达达研发中心",
+							"children": [{
+								"text": "达达技术研发部"
+							}, {
+								"text": "达达ERP系统部",
+								"children": [{
+										"text": "达达ERP系统部"
+									},
+									{
+										"text": "达达ERP系统部"
+									},
+									{
+										"text": "达达ERP系统部"
+									},
+									{
+										"text": "达达ERP系统部"
+									},
+									{
+										"text": "达达ERP系统部"
+									}
+								]
+							}, {
+								"text": "达达移动终端部"
+							}, {
+								"text": "达达产品研发部"
+							}]
+						}, {
+							"text": "市场渠道部"
+						}, {
+							"text": "达达云中心",
+							"children": [{
+								"text": "达达B2B平台部",
+								"children": [{
+									"text": "达达B2B平台部"
+								}]
+							}]
+						}]
+					}]
+				}]
+			}, {
+				"text": "战略委员会"
+			}, {
+				"text": "薪酬与考核委员会"
+			}, {
+				"text": "提名委员会"
+			}, {
+				"text": "审计委员会",
+				"children": [{
+					"text": "内审监察部"
+				}]
+			}, {
+				"text": "投资部"
+			}, {
+				"text": "董秘办"
+			}]
+		}, {
+			"text": "监事会"
+		}]
+	}]
+};
